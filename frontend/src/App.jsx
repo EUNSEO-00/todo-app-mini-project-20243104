@@ -5,7 +5,7 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [title, setTitle] = useState('');
 
-  const API = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/todos';
+  const API = "https://todo-app-mini-project-20243104-4hwc.vercel.app/api/todos";
 
   const fetchTodos = async () => {
     const res = await axios.get(API);
