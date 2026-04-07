@@ -41,11 +41,17 @@ app.get('/api/todos', async (req, res) => {
 // ✅ POST
 app.post('/api/todos', async (req, res) => {
   try {
-    const newTodo = new Todo({ title: req.body.title });
+    console.log("BODY:", req.body); // 👈 추가
+
+    const newTodo = new Todo({
+      title: req.body?.title || "기본값"
+    });
+
     const saved = await newTodo.save();
     res.json(saved);
+
   } catch (err) {
-    console.error(err);
+    console.error("POST 에러:", err);
     res.status(500).json({ error: '서버 에러' });
   }
 });
