@@ -5,7 +5,7 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [title, setTitle] = useState('');
 
-  const API = 'http://localhost:5000/api/todos';
+  const API = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/todos';
 
   const fetchTodos = async () => {
     const res = await axios.get(API);

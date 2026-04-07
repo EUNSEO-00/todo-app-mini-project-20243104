@@ -49,5 +49,10 @@ app.delete('/api/todos/:id', async (req, res) => {
   res.json({ message: '삭제 완료' });
 });
 
-const PORT = 5000;
-app.listen(PORT, () => console.log(`서버 실행 중: http://localhost:${PORT}`));
+const PORT = process.env.PORT || 5000;
+
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => console.log(`서버 실행 중: http://localhost:${PORT}`));
+}
+
+module.exports = app;
