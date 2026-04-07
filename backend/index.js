@@ -1,0 +1,53 @@
+require('dotenv').config();
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+// 🔥 여기에 MongoDB 연결 문자열 넣기
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('MongoDB 연결 성공'))
+  .catch(err => console.log(err));
+
+// Todo 스키마
+const todoSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  completed: { type: Boolean, default: false }
+});
+
+const Todo = mongoose.model('Todo', todoSchema);
+
+// GET
+app.get('/api/todos', async (req, res) => {
+  const todos = await Todo.find();
+  res.json(todos);
+});
+
+// POST
+app.post('/api/todos', async (req, res) => {
+  const newTodo = new Todo({ title: req.body.title });
+  await newTodo.save();
+  res.json(newTodo);
+});
+
+// PUT
+app.put('/api/todos/:id', async (req, res) => {
+  const todo = await Todo.findByIdAndUpdate(
+    req.params.id,
+    { completed: req.body.completed },
+    { new: true }
+  );
+  res.json(todo);
+});
+
+// DELETE
+app.delete('/api/todos/:id', async (req, res) => {
+  await Todo.findByIdAndDelete(req.params.id);
+  res.json({ message: '삭제 완료' });
+});
+
+const PORT = 5000;
+app.listen(PORT, () => console.log(`서버 실행 중: http://localhost:${PORT}`));
