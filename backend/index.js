@@ -11,8 +11,9 @@ app.use(express.json());
 // ✅ MongoDB 연결
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB 연결 성공'))
-  .catch(err => console.error('MongoDB 연결 실패:', err));
-
+  .catch(err => {
+    console.error('MongoDB 연결 실패:', err);
+  });
 // ✅ 테스트용 (서버 확인)
 app.get('/api/test', (req, res) => {
   res.json({ message: '백엔드 살아있음' });
